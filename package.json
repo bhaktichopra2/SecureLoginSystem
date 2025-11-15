@@ -1,0 +1,44 @@
+{
+  "name": "secureloginsystem",
+  "version": "1.0.0",
+  "description": "A secure user authentication system built using Node.js and Express, designed according to OWASP Top 10 security standards.",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhaktichopra2/SecureLoginSystem.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "security",
+    "authentication",
+    "owasp",
+    "bcrypt",
+    "csrf"
+  ],
+  "author": "Bhakti Chopra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhaktichopra2/SecureLoginSystem/issues"
+  },
+  "homepage": "https://github.com/bhaktichopra2/SecureLoginSystem#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-redis": "^7.0.0",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "redis": "^4.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
