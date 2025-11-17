@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import {prisma} from "./config/db.js"
 
 dotenv.config();
 
@@ -16,3 +17,12 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+(async () => {
+  try{
+    await prisma.$connect();
+    console.log("DB connected successfully");
+  }catch(error){
+    console.error("DB connection error", error);
+  }
+})();
