@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import {prisma} from "./config/db.js"
+import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
 
@@ -26,3 +27,5 @@ app.listen(PORT, () => {
     console.error("DB connection error", error);
   }
 })();
+
+app.use("/api/auth", authRoutes);
