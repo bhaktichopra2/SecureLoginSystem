@@ -1,7 +1,9 @@
 import express from "express";
+import session from "express-session";
 import dotenv from "dotenv";
 import {prisma} from "./config/db.js"
 import authRoutes from "./routes/authRoutes.js"
+
 
 dotenv.config();
 
@@ -27,5 +29,18 @@ app.listen(PORT, () => {
     console.error("DB connection error", error);
   }
 })();
+
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
 
 app.use("/api/auth", authRoutes);
