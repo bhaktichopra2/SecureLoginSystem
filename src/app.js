@@ -2,8 +2,9 @@ import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
 import {prisma} from "./config/db.js"
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/authRoutes.js"
-
 
 dotenv.config();
 
@@ -42,5 +43,14 @@ app.use(
     },
   })
 );
+
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs : 15 * 60 * 1000,
+  max : 100,
+});
+
+app.use(limiter);
 
 app.use("/api/auth", authRoutes);
