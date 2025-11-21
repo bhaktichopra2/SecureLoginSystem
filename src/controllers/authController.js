@@ -29,6 +29,10 @@ export const registerUser = async (req, res) =>{
         console.error("Register error", error);
         return res.status(500).json({message:"Server error"});
     }
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(400).json({errors:errors.array()});
+    }
 }
 
 export const loginUser = async (req, res)=>{

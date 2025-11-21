@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import {prisma} from "./config/db.js"
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import csrf from "csurf";
+import xss from "xss-clean";
 import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
@@ -11,6 +13,8 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(express.json({limit: "10kb"}));
+app.use(xss())
 
 // test route
 app.get("/", (req, res) => {
@@ -31,19 +35,6 @@ app.listen(PORT, () => {
   }
 })();
 
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  })
-);
-
 app.use(helmet());
 
 const limiter = rateLimit({
@@ -53,4 +44,29 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
+
+
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
 app.use("/api/auth", authRoutes);
+
+app.use((err, req, res, next) => {
+  console.error("Unhandled Error:", err);
+  res.status(500).json({ message: "Internal Server Error" });
+});
+
+export default app;
