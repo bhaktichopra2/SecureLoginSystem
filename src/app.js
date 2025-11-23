@@ -1,12 +1,14 @@
 import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
+import morgan from "morgan";
 import {prisma} from "./config/db.js"
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import csrf from "csurf";
 import xss from "xss-clean";
 import authRoutes from "./routes/authRoutes.js"
+import { loggers } from "winston";
 
 dotenv.config();
 
@@ -68,5 +70,12 @@ app.use((err, req, res, next) => {
   console.error("Unhandled Error:", err);
   res.status(500).json({ message: "Internal Server Error" });
 });
+
+app.use(morgan("dev"));
+
+if(err.code === "EBADCSRFTOKEN"){
+  logger.warn("CSRF failure from IP ${req.ip} ")
+  return res.status(403).json({message:"Invalid CSRK Token"})
+}
 
 export default app;

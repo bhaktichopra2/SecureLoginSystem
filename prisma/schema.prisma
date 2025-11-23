@@ -20,3 +20,10 @@ model User {
   locked_until    DateTime?
   created_at      DateTime  @default(now())
 }
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  ip        String?
+  timestamp DateTime @default(now())
+}

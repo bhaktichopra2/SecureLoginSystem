@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "AuditLog" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER,
+    "action" TEXT NOT NULL,
+    "ip" TEXT,
+    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

@@ -27,7 +27,9 @@ router.get('/dashboard', requireAuth, (req, res)=>{
     })
 })
 
-router.post("/logout", (req, res)=>{
+router.post("/logout", async (req, res)=>{
+    await audit(req.session.userId, "LOGOUT", req.ip);
+
     req.session.destroy(err=>{
         if(err){
             return res.status(500).json({ message:"Error logging out"})
