@@ -7,12 +7,20 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import csrf from "csurf";
 import xss from "xss-clean";
+import cors from "cors";
 import authRoutes from "./routes/authRoutes.js"
 import { loggers } from "winston";
 
-dotenv.config();
-
 const app = express();
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true, // allow cookies/session
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "X-CSRF-Token"]
+}));
+
+dotenv.config();
 
 app.use(express.json());
 app.use(express.json({limit: "10kb"}));
@@ -23,10 +31,6 @@ app.get("/", (req, res) => {
   res.send("Secure Login System Backend Running");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 (async () => {
   try{
@@ -66,16 +70,20 @@ app.use(csrfProtection);
 
 app.use("/api/auth", authRoutes);
 
+app.use(morgan("dev"));
+
 app.use((err, req, res, next) => {
+  if(err.code === "EBADCSRFTOKEN"){
+  logger.warn("CSRF failure from IP ${req.ip} ")
+  return res.status(403).json({message:"Invalid CSRK Token"})
+}
   console.error("Unhandled Error:", err);
   res.status(500).json({ message: "Internal Server Error" });
 });
 
-app.use(morgan("dev"));
-
-if(err.code === "EBADCSRFTOKEN"){
-  logger.warn("CSRF failure from IP ${req.ip} ")
-  return res.status(403).json({message:"Invalid CSRK Token"})
-}
-
 export default app;
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

@@ -1,7 +1,16 @@
-import { prisma } from "../config/db.js";
+import fs from "fs";
+import path from "path";
 
-export const audit = async (userId, action, ip) => {
-  await prisma.auditLog.create({
-    data: { userId, action, ip },
+const logPath = path.join(process.cwd(), "src/logs/security.log");
+
+export default function audit(userId, action, ip) {
+  const entry = `[${new Date().toISOString()}] USER: ${
+    userId || "UNKNOWN"
+  } | ACTION: ${action} | IP: ${ip}\n`;
+
+  fs.appendFile(logPath, entry, (err) => {
+    if (err) {
+      console.error("Failed to write audit log:", err);
+    }
   });
-};
+}
