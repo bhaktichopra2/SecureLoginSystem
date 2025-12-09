@@ -3,6 +3,8 @@ import { registerUser } from "../controllers/authController.js";
 import { loginUser } from "../controllers/authController.js";
 import { requireAuth } from "../middleware/authMiddleware.js";
 import { body } from "express-validator";
+import audit from "../utils/audit.js";
+
 
 const router = express.Router();
 
@@ -30,11 +32,12 @@ router.get('/dashboard', requireAuth, (req, res)=>{
 router.post("/logout", async (req, res)=>{
     await audit(req.session.userId, "LOGOUT", req.ip);
 
-    req.session.destroy(err=>{
+    req.session.destroy((err)=>{
         if(err){
             return res.status(500).json({ message:"Error logging out"})
         }
-        res.status(200).json({message:"Logged out successfully"})
+        res.clearCookie("sessionId");
+        return res.status(200).json({message:"Logged out successfully"})
     })
 })
 

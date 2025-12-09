@@ -1,29 +1,43 @@
 import { useEffect, useState } from "react";
-import { getDashboard, logoutUser } from "../api/api";
+import { getDashboard, logoutUser, getCsrfToken } from "../api/api";
 
 export default function Dashboard() {
-  const [message, setMessage] = useState("");
+  const [data, setData] = useState("");
 
   useEffect(() => {
     getDashboard()
-      .then((res) => setMessage(res.data.message))
-      .catch(() => {
-        window.location.href = "/"; // not logged in
-      });
+      .then((res) => setData(res.data.message))
+      .catch(() => (window.location.href = "/"));
   }, []);
 
-  const handleLogout = async () => {
-    await logoutUser();
+const handleLogout = async () => {
+  try {
+    // Get new CSRF token before logout
+    const res = await getCsrfToken();
+    const csrf = res.data.csrfToken;
+
+    console.log("Fetched CSRF token:", csrf);
+
+    // Now call logout with CSRF token
+    const logoutRes = await logoutUser(csrf);
+
+    console.log("Logout API Response:", logoutRes);
+
+    alert("Logged out");
     window.location.href = "/";
-  };
+  } catch (err) {
+    console.error("Logout error:", err);
+    alert("Logout failed");
+  }
+};
+
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-3xl font-semibold mb-6">{message}</h1>
-
+    <div className="p-6">
+      <h1 className="text-3xl font-bold">{data}</h1>
       <button
         onClick={handleLogout}
-        className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+        className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
       >
         Logout
       </button>

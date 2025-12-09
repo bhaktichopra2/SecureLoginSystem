@@ -27,7 +27,7 @@ export const getDashboard = () =>
     api.get("/dashboard")
 
 //Logout
-export const logoutUser = () =>
-    api.post("/logout")
+export const logoutUser = (csrf) =>
+  api.post("/logout", {}, { headers: { "X-CSRF-Token": csrf }});
 
 export default api;

@@ -52,12 +52,13 @@ app.use(limiter);
 
 app.use(
   session({
+    name : "sessionId",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "lax",
       secure: false,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
