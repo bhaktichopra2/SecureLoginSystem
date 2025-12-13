@@ -12,19 +12,55 @@ import authRoutes from "./routes/authRoutes.js"
 import { loggers } from "winston";
 
 const app = express();
-
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true, // allow cookies/session
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "X-CSRF-Token"]
-}));
-
-dotenv.config();
-
 app.use(express.json());
 app.use(express.json({limit: "10kb"}));
 app.use(xss())
+
+app.use(
+  helmet({
+    contentSecurityPolicy:{   //blocks injected scripts
+      directives:{
+        defaultSrc:["'self'"],
+        scriptSrc:["'self'"],
+        styleSrc:["'self'", "'unsafe-inline'"],
+        imgSrc:["'self", "'data'"],
+        frameAncestors: ["'none'"],
+        connectSrc:["'self'","http://localhost:5173"],
+        fontSrc:["'self'"],
+      },
+    },
+    frameguard: { action: "deny"}, //stops clickjacking
+    referrerPolicy: {policy: "no-referrer"}, //no url leakage
+    crossOriginEmbedderPolicy: false, //prevents react crash
+  }));
+
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
+
+dotenv.config();
+
+app.use(
+  session({
+    name : "sessionId",
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
+
+
 
 // test route
 app.get("/", (req, res) => {
@@ -41,22 +77,6 @@ app.get("/", (req, res) => {
   }
 })();
 
-app.use(helmet());
-
-app.use(
-  session({
-    name : "sessionId",
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  })
-);
 
 
 const csrfProtection = csrf();
