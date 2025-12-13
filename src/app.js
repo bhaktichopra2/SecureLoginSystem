@@ -43,13 +43,6 @@ app.get("/", (req, res) => {
 
 app.use(helmet());
 
-const limiter = rateLimit({
-  windowMs : 15 * 60 * 1000,
-  max : 100,
-});
-
-app.use(limiter);
-
 app.use(
   session({
     name : "sessionId",
@@ -79,7 +72,7 @@ app.use((err, req, res, next) => {
   return res.status(403).json({message:"Invalid CSRK Token"})
 }
   console.error("Unhandled Error:", err);
-  res.status(500).json({ message: "Internal Server Error" });
+  res.status(500).json({ message: "Too many attempts. Try again later." });
 });
 
 export default app;

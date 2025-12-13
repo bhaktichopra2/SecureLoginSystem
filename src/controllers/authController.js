@@ -61,6 +61,10 @@ export const registerUser = async (req, res) => {
    LOGIN USER
 ------------------------------------------------------------- */
 export const loginUser = async (req, res) => {
+  if (req.rateLimit && req.rateLimit.remaining === 0) {
+  logger.warn(`Rate limit hit for IP ${req.ip}`);
+}
+
   try {
     /* ---------- Input Validation ---------- */
     const { email, password } = req.body;
