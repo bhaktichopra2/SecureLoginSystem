@@ -8,8 +8,8 @@ import rateLimit from "express-rate-limit";
 import csrf from "csurf";
 import xss from "xss-clean";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.js"
-import { loggers } from "winston";
+import authRoutes from "./routes/authRoutes.js";
+import logger from "./utils/logger.js";
 
 const app = express();
 app.use(express.json());
@@ -88,8 +88,8 @@ app.use(morgan("dev"));
 
 app.use((err, req, res, next) => {
   if(err.code === "EBADCSRFTOKEN"){
-  logger.warn("CSRF failure from IP ${req.ip} ")
-  return res.status(403).json({message:"Invalid CSRK Token"})
+  logger.warn('CSRF failure from IP ${req.ip}')
+  return res.status(403).json({message:"Invalid CSRF Token"})
 }
   console.error("Unhandled Error:", err);
   res.status(500).json({ message: "Too many attempts. Try again later." });

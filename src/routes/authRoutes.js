@@ -47,7 +47,7 @@ router.get('/dashboard', requireAuth, (req, res)=>{
     })
 })
 
-router.post("/logout", async (req, res)=>{
+router.post("/logout", requireAuth, async (req, res)=>{
     await audit(req.session.userId, "LOGOUT", req.ip);
 
     req.session.destroy((err)=>{
