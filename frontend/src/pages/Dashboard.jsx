@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { getDashboard, logoutUser, getCsrfToken } from "../api/api";
 
+import HeroSec from '../components/heroSec';
+import Introduction from '../components/Introduction'
+import Learning from '../components/Learning'
+import OWASP from '../components/OWASP';
+import ProjectOverview from '../components/ProjectOverview'
+import TechStack from '../components/TechStack'
+import Features from '../components/Features';
+
+
 export default function Dashboard() {
   const [data, setData] = useState("");
 
@@ -32,15 +41,27 @@ const handleLogout = async () => {
 };
 
 
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">{data}</h1>
-      <button
-        onClick={handleLogout}
-        className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
-      >
-        Logout
-      </button>
-    </div>
+ return (
+    <>
+      <HeroSec/>
+
+      <Introduction />
+      <ProjectOverview />
+      <Features />
+      <TechStack />
+      <OWASP />
+      <Learning />
+
+      {/* Footer Logout */}
+      <div className="flex justify-center py-10">
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </div>
+    </>
   );
+
 }
