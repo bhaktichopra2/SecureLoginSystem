@@ -2,16 +2,16 @@ import { useState } from "react";
 
 const features = [
   {
-    title: "CSRF Protection",
-    desc: "Secure token-based protection against CSRF attacks."
+    title: "Session-Based Authentication",
+    desc: "Uses secure HTTP-only cookies and server-side sessions to manage user authentication safely."
   },
   {
-    title: "Protected Routes",
-    desc: "Unauthorized users are redirected safely."
+    title: "Brute-Force Protection",
+    desc: "Prevents repeated login attempts using rate limiting and automatic account lockout."
   },
   {
-    title: "Secure Logout",
-    desc: "Logout requires a fresh CSRF token."
+    title: "Security Activity Dashboard",
+    desc: "Displays recent login, logout, and failed attempts to help users monitor suspicious behavior."
   }
 ];
 

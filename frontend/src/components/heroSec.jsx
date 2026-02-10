@@ -1,4 +1,4 @@
-export default function HeroSection({ title }) {
+export default function HeroSec({ title }) {
   return (
     <section
       className="

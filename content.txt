@@ -1,0 +1,45 @@
+
+
+🧠 What I Learned (≈150–180 words)
+
+
+
+
+🛠️ Tech Stack & Libraries Used
+Backend
+
+Node.js — JavaScript runtime
+
+Express.js — Web framework
+
+Prisma ORM — Database access & schema management
+
+SQLite / PostgreSQL — Relational database
+
+bcryptjs — Secure password hashing
+
+express-session — Session-based authentication
+
+csurf — CSRF protection
+
+express-rate-limit — Brute-force protection
+
+express-validator — Input validation
+
+helmet — Secure HTTP headers
+
+xss-clean — XSS attack mitigation
+
+cors — Controlled cross-origin requests
+
+winston — Structured logging
+
+dotenv — Environment variable management
+
+Frontend
+
+React — User interface
+
+Tailwind CSS — Styling and layout
+
+Axios — API communication

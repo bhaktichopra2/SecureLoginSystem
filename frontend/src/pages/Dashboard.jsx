@@ -8,6 +8,7 @@ import OWASP from '../components/OWASP';
 import ProjectOverview from '../components/ProjectOverview'
 import TechStack from '../components/TechStack'
 import Features from '../components/Features';
+import Feedback from "../components/Feedback";
 
 
 export default function Dashboard() {
@@ -51,6 +52,7 @@ const handleLogout = async () => {
       <TechStack />
       <OWASP />
       <Learning />
+      <Feedback />
 
       {/* Footer Logout */}
       <div className="flex justify-center py-10">
