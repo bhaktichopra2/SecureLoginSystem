@@ -27,15 +27,17 @@ const handleRegister = async (e) =>{
 
 return(
 
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <form className="bg-white shadow-md p-6 rounded w-96" onSubmit={handleRegister}>
-            <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-950">
+        <form className="bg-slate-900 shadow-md p-6 rounded w-96" onSubmit={handleRegister}>
+            <h2 className="text-2xl font-bold mb-4 text-center text-emerald-100">Register</h2>
+
             <Input label="Email" type="email" value={email} onChange={(e)=> setEmail(e.target.value)} />
             <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /> 
+
             <Button type="submit">Register</Button>
 
-            <p className="mt-3 text-center">
-            Already have an account? <a href="/" className="text-blue-600">Login</a>
+            <p className="mt-3 text-center text-green-500">
+            Already have an account? <a href="/" className="text-green-500 hover:text-green-100">Login</a>
             </p>
         </form>
     </div>
