@@ -3,7 +3,7 @@ export default function HeroSec({ title }) {
     <section
       className="
         relative
-        h-[90vh]
+        h-[100vh]
         w-full
         bg-black
         overflow-hidden
@@ -64,7 +64,7 @@ export default function HeroSec({ title }) {
               font-bold
               tracking-wide
               text-white
-              drop-shadow-[0_0_20px_rgba(0,255,255,0.35)]
+              
             "
           >
             {title || "Welcome to Secure Authentication Dashboard"}

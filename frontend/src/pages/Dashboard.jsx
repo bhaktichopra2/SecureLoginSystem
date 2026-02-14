@@ -43,9 +43,8 @@ const handleLogout = async () => {
 
 
  return (
-    <>
+    <div className="bg-neutral-950 text-slate-50">
       <HeroSec/>
-
       <Introduction />
       <ProjectOverview />
       <Features />
@@ -63,7 +62,7 @@ const handleLogout = async () => {
           Logout
         </button>
       </div>
-    </>
+    </div>
   );
 
 }
